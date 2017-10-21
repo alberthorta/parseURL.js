@@ -3,8 +3,12 @@ String.prototype.parseURL = function() {
     var domain = undefined, port = undefined, user = undefined, password = undefined;
 	if(uri_components[4] != undefined) {
 	    var domain_components = ("@"+uri_components[4]).split("@");
-		[domain, port] = domain_components.pop().split(":",2);
-		[user, password] = domain_components.pop().split(":",2);
+		var domain_and_port = domain_components.pop().split(":",2);
+		domain = domain_and_port[0];
+		port = domain_and_port[1];
+		var user_and_password = domain_components.pop().split(":",2);
+		user = user_and_password[0];
+		password = user_and_password[1];
 	}
 	var params_array = uri_components[7]===undefined?[]:decodeURIComponent(uri_components[7]).replace(/\+/g, ' ').split("&");
 	var params = {};
