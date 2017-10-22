@@ -37,3 +37,7 @@ Object {
 ```
 
 Feel free to use the minified version parseURL.min.js in order to reduce the footprint of the library.
+
+## External references
+
+[RFC 3986 - Uniform Resource Identifier (URI): Generic Syntax](https://tools.ietf.org/html/rfc3986)
