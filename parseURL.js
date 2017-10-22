@@ -5,7 +5,7 @@
  *        out_obj = {
  *        	user     : {string | undefined} Username, 
  *          password : {string | undefined} Password,  
- *          domain   : {string | undefined} Domain name, 
+ *          host     : {string | undefined} Host, 
  *          port     : {string | undefined} Port
  *        }
  * @return {object} out_obj
@@ -15,12 +15,12 @@ String.prototype.parseURIDomain = function (out_obj) {
     out_obj.user = undefined;
     out_obj.password = undefined;
     out_obj.port = undefined;
-    out_obj.domain = undefined;
-    out_obj.port = (out_obj.protocol === 'http' ? 80 : (out_obj.protocol === 'https' ? 443 : (out_obj.protocol === 'ftp' ? 21 : undefined)));
+    out_obj.host = undefined;
+    out_obj.port = (out_obj.scheme === 'http' ? 80 : (out_obj.scheme === 'https' ? 443 : (out_obj.scheme === 'ftp' ? 21 : undefined)));
     if (this && this.length > 0) {
         domain_components = ("@" + this).split("@");
         domain_and_port = domain_components.pop().split(":", 2);
-        out_obj.domain = domain_and_port[0] !== "" ? domain_and_port[0] : undefined;
+        out_obj.host = domain_and_port[0] !== "" ? domain_and_port[0] : undefined;
         out_obj.port = (domain_and_port[1] !== undefined) ? parseInt(domain_and_port[1]) : out_obj.port;
         user_and_password = domain_components.pop().split(":", 2);
         out_obj.user = user_and_password[0] !== "" ? user_and_password[0] : undefined;
@@ -49,20 +49,20 @@ String.prototype.parseURIParams = function () {
  *        {
  *        	user     : {string | undefined} Username, 
  *          password : {string | undefined} Password,  
- *          domain   : {string | undefined} Domain name, 
+ *          host     : {string | undefined} Host, 
  *          port     : {string | undefined} Port,
- *          params   : {object | undefined} Parsed GET Parameters,
+ *          query    : {object | undefined} Parsed GET Query Parameters,
  *          path     : {string | undefined} Absolute path,
- *          protocol : {string | undefined} Protocol ("http" | "https" | "file" | ... ) <lowercase>,
- *          hash     : {string | undefined} Hash
+ *          scheme   : {string | undefined} Scheme ("http" | "https" | "file" | ... ) <lowercase>,
+ *          fragment : {string | undefined} Fragment
  *        }
  */
 String.prototype.parseURL = function () {
     var uri_components = (/^(([^:\/?#]+):)?(\/\/([^\/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/g).exec(this);
     return (uri_components[4] || "").parseURIDomain({
-        protocol: uri_components[2] !== undefined ? uri_components[2].toLowerCase() : undefined,
+        scheme: uri_components[2] !== undefined ? uri_components[2].toLowerCase() : undefined,
         path: (uri_components[2] || "").toLowerCase() === 'file' ? uri_components[5].slice(1) : uri_components[5] || undefined,
-        hash: uri_components[9],
-        params: (!uri_components[7] || uri_components[7].length === 0) ? {} : uri_components[7].parseURIParams()
+        fragment: uri_components[9],
+        query: (!uri_components[7] || uri_components[7].length === 0) ? {} : uri_components[7].parseURIParams()
     });
 };

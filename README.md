@@ -23,16 +23,16 @@ This will output an object with the following information:
 
 ```
 Object {
-  protocol: "https",
+  scheme: "https",
   path: "/search",
-  hash: undefined,
-  params: Object {
+  fragment: undefined,
+  query: Object {
     q: "URL PARSER LIBRARY"
   },
   user: undefined,
   password: undefined,
   port: 443,
-  domain: "www.google.es"
+  host: "www.google.es"
 }
 ```
 
